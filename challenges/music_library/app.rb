@@ -8,4 +8,4 @@ sql = 'SELECT id, title, release_year FROM albums;'
 result = DatabaseConnection.exec_params(sql, [])
 
 album_repo = AlbumRepository.new
-p album_repo.all
+album_repo.all.each { |album| p album }
