@@ -73,12 +73,7 @@ end
 
 ## 6. Write Test Examples
 
-Write Ruby code that defines the expected behaviour of the Repository class, following your design from the table written in step 5.
-
-These examples will later be encoded as RSpec tests.
-
 ```ruby
-
 # 1
 # Get all albums
 repo = AlbumRepository.new
@@ -126,32 +121,26 @@ repo.find(1) # => ???????
 
 
 ```
-
-Encode this example as a test.
-
 ## 7. Reload the SQL seeds before each test run
-
-Running the SQL code present in the seed file will empty the table and re-insert the seed data.
-
-This is so you get a fresh table contents every time you run the test suite.
 
 ```ruby
 # EXAMPLE
 
 # file: spec/student_repository_spec.rb
 
-def reset_students_table
-  seed_sql = File.read('spec/seeds_students.sql')
-  connection = PG.connect({ host: '127.0.0.1', dbname: 'students' })
+def reset_album_table
+  seed_sql = File.read('spec/seeds.sql')
+  connection = PG.connect({ host: '127.0.0.1', dbname: 'music_library_test' })
   connection.exec(seed_sql)
 end
 
-describe StudentRepository do
-  before(:each) do 
-    reset_students_table
+describe AlbumRepository do
+  before(:each) do
+    reset_album_table
   end
 
   # (your tests will go here).
+
 end
 ```
 
