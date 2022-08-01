@@ -20,85 +20,54 @@ psql -h 127.0.0.1 music_library_test < spec/seeds.sql
 # Model class
 # (in lib/album.rb)
 class Album
-end
-
+  
 # Repository class
 # (in lib/album_repository.rb)
 class AlbumRepository
-end
 ```
 
 ## 4. Implement the Model class
 
-Define the attributes of your Model class. You can usually map the table columns to the attributes of the class, including primary and foreign keys.
-
 ```ruby
-# EXAMPLE
-# Table name: students
+# Table name: albums
 
 # Model class
-# (in lib/student.rb)
-
-class Student
-
-  # Replace the attributes by your own columns.
-  attr_accessor :id, :name, :cohort_name
+# (in lib/album.rb)
+class Album
+  attr_accessor :id, :title, :release_year, :artist_id
 end
-
-# The keyword attr_accessor is a special Ruby feature
-# which allows us to set and get attributes on an object,
-# here's an example:
-#
-# student = Student.new
-# student.name = 'Jo'
-# student.name
 ```
-
-*You may choose to test-drive this class, but unless it contains any more logic than the example above, it is probably not needed.*
 
 ## 5. Define the Repository Class interface
 
-Your Repository class will need to implement methods for each "read" or "write" operation you'd like to run against the database.
-
-Using comments, define the method signatures (arguments and return value) and what they do - write up the SQL queries that will be used by each method.
-
 ```ruby
-# EXAMPLE
-# Table name: students
-
 # Repository class
-# (in lib/student_repository.rb)
-
-class StudentRepository
-
-  # Selecting all records
-  # No arguments
+# (in lib/album_repository.rb)
+class AlbumRepository
   def all
-    # Executes the SQL query:
-    # SELECT id, name, cohort_name FROM students;
-
-    # Returns an array of Student objects.
+    # SELECT id, name, release_year, artist_id FROM albums;
+    # return an array of album objects
   end
 
-  # Gets a single record by its ID
-  # One argument: the id (number)
   def find(id)
-    # Executes the SQL query:
-    # SELECT id, name, cohort_name FROM students WHERE id = $1;
-
-    # Returns a single Student object.
+    # SELECT * FROM albums WHERE id = id;
+    # Return album object found
   end
 
-  # Add more methods below for each operation you'd like to implement.
+  def create(title, release_year, artist_id)
+    # INSERT INTO albums (title, release_year, artist_id) VALUES (title, release_year, artist_id);
+    # returns nothing
+  end
 
-  # def create(student)
-  # end
+  def update(album_id, col, val)
+    # UPDATE albums SET col = val WHERE album_id = album_id;
+    # returns nothing
+  end
 
-  # def update(student)
-  # end
-
-  # def delete(student)
-  # end
+  def delete(album_id)
+    # DELETE FROM albums WHERE album_id = album_id;
+    # returns nothing
+  end
 end
 ```
 
@@ -109,37 +78,53 @@ Write Ruby code that defines the expected behaviour of the Repository class, fol
 These examples will later be encoded as RSpec tests.
 
 ```ruby
-# EXAMPLES
 
 # 1
-# Get all students
-
-repo = StudentRepository.new
-
-students = repo.all
-
-students.length # =>  2
-
-students[0].id # =>  1
-students[0].name # =>  'David'
-students[0].cohort_name # =>  'April 2022'
-
-students[1].id # =>  2
-students[1].name # =>  'Anna'
-students[1].cohort_name # =>  'May 2022'
+# Get all albums
+repo = AlbumRepository.new
+albums = repo.all
+albums.length # =>  12
+albums[0].id # =>  1
+albums[0].title # =>  'Doolittle'
+albums[0].release_year # =>  1989
+albums[0].artist_id # => 1
 
 # 2
-# Get a single student
-
+# Get a single album
 repo = StudentRepository.new
+album = repo.find(2)
+album.id # =>  2
+album.title # =>  'Surfer Rosa'
+album.release_year # =>  1988
+album.artist_id # => 1
 
-student = repo.find(1)
+# 3
+# Create an album
+repo = AlbumRepository.new
+repo.create('Revolver', 1966, 5)
+albums = repo.all
+albums.length # =>  13
+albums.last.id # =>  13
+albums.last.title # =>  'Revolver'
+albums.last.release_year # =>  1966
+albums.last.artist_id # => 5
 
-student.id # =>  1
-student.name # =>  'David'
-student.cohort_name # =>  'April 2022'
+# 4
+# Update an album
+repo = AlbumRepository.new
+repo.update(1, "release_year", 2000)
+album = repo.find(1)
+album.release_year # =>  2000
 
-# Add more examples for each method
+# 5
+# Delete an album
+repo = AlbumRepository.new
+repo.delete(1)
+albums = repo.all
+albums.length # =>  11
+repo.find(1) # => ???????
+
+
 ```
 
 Encode this example as a test.

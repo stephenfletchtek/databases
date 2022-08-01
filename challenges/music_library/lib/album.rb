@@ -1,13 +1,3 @@
 class Album
-  def initialize
-  end
-
-  def title
-  end
-
-  def release_year
-  end
-
-  def artist_id
-  end
+  attr_accessor :id, :title, :release_year, :artist_id
 end
