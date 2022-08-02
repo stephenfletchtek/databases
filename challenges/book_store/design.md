@@ -93,66 +93,67 @@ end
 
 ## 6. Write Test Examples
 
-Write Ruby code that defines the expected behaviour of the Repository class, following your design from the table written in step 5.
-
-These examples will later be encoded as RSpec tests.
-
 ```ruby
-# EXAMPLES
-
 # 1
-# Get all students
-
-repo = StudentRepository.new
-
-students = repo.all
-
-students.length # =>  2
-
-students[0].id # =>  1
-students[0].name # =>  'David'
-students[0].cohort_name # =>  'April 2022'
-
-students[1].id # =>  2
-students[1].name # =>  'Anna'
-students[1].cohort_name # =>  'May 2022'
+# Get all books
+repo = BookRepository.new
+books = repo.all
+books.length # =>  5
+book[0].id # =>  1
+book[0].title # =>  'Nineteen Eighty-Four'
+book[0].author_name # =>  'George Orwell'
+book[1].id # =>  2
+book[1].title # =>  'Mrs Dalloway'
+book[1].author_name # =>  'Virginia Woolf'
 
 # 2
-# Get a single student
+# Get a single book
+repo = BookRepository.new
+book = repo.find(1)
+book.id # =>  1
+book.title # =>  'Nineteen Eighty-Four'
+book.author_name # =>  'George Orwell'
 
-repo = StudentRepository.new
+# 3
+# Create a book
+repo = BookRepository.new
+book.create('Catch 22', 'Joseph Heller' )
+books = repo.all
+books.length # =>  6
+book[-1].id # =>  6
+book[-1].title # =>  'Catch 22'
+book[-1].author_name # =>  'Joseph Heller'
 
-student = repo.find(1)
+# 4
+# Update book
+repo = BookRepository.new
+repo.update(1, 'title', 1984)
+book = repo.find(1)
+book.title # => "1984"
 
-student.id # =>  1
-student.name # =>  'David'
-student.cohort_name # =>  'April 2022'
-
-# Add more examples for each method
+# 5
+# Delete book
+repo = BookRepository.new
+repo.delete(1)
+books = repo.all
+books.length # => 4
+repo.find(1) # => nil
 ```
-
-Encode this example as a test.
 
 ## 7. Reload the SQL seeds before each test run
 
-Running the SQL code present in the seed file will empty the table and re-insert the seed data.
-
-This is so you get a fresh table contents every time you run the test suite.
-
 ```ruby
-# EXAMPLE
+# file: spec/book_repository_spec.rb
 
-# file: spec/student_repository_spec.rb
-
-def reset_students_table
-  seed_sql = File.read('spec/seeds_students.sql')
-  connection = PG.connect({ host: '127.0.0.1', dbname: 'students' })
+def reset_book_table
+  seed_sql = File.read('spec/seeds.sql')
+  connection = PG.connect({ host: '127.0.0.1', dbname: 'book_store_test' })
   connection.exec(seed_sql)
 end
 
-describe StudentRepository do
+describe BookRepository do
   before(:each) do 
-    reset_students_table
+    reset_book_table
   end
 
   # (your tests will go here).
