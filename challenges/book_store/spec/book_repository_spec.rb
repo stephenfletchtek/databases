@@ -23,4 +23,12 @@ RSpec.describe BookRepository do
     expect(books[1].author_name).to eq 'Virginia Woolf'
   end
   
+  it "gets a single book" do
+    repo = BookRepository.new
+    book = repo.find(1)
+    expect(book.id).to eq '1'
+    expect(book.title).to eq 'Nineteen Eighty-Four'
+    expect(book.author_name).to eq 'George Orwell'
+  end
+
 end

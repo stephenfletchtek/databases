@@ -7,6 +7,12 @@ class BookRepository
     result_set.map { |record| make_book(record) }
   end
 
+  def find(id)
+    sql = "SELECT * FROM books WHERE id = #{id}"
+    result = DatabaseConnection.exec_params(sql, [])
+    make_book(result[0])
+  end
+
   private
 
   def make_book(record)
