@@ -31,4 +31,28 @@ RSpec.describe BookRepository do
     expect(book.author_name).to eq 'George Orwell'
   end
 
+  it "creates a book" do
+    repo = BookRepository.new
+    repo.create('Catch 22', 'Joseph Heller' )
+    books = repo.all
+    expect(books.length).to eq 6
+    expect(books[-1].id).to eq '6'
+    expect(books[-1].title).to eq 'Catch 22'
+    expect(books[-1].author_name).to eq 'Joseph Heller'    
+  end
+
+  it "updates a book" do
+    repo = BookRepository.new
+    repo.update(1, 'title', 1984)
+    book = repo.find(1)
+    expect(book.title).to eq "1984"      
+  end
+
+  it "deletes a book" do
+    repo = BookRepository.new
+    repo.delete(1)
+    books = repo.all
+    expect(books.length).to eq (4)
+    expect { repo.find(1) }.to raise_error "Book not found!"  
+  end
 end

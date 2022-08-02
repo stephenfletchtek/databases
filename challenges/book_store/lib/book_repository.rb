@@ -8,9 +8,25 @@ class BookRepository
   end
 
   def find(id)
-    sql = "SELECT * FROM books WHERE id = #{id}"
+    sql = "SELECT * FROM books WHERE id = #{id};"
     result = DatabaseConnection.exec_params(sql, [])
+    fail "Book not found!" if result.ntuples == 0
     make_book(result[0])
+  end
+
+  def create(title, author_name)
+    sql = "INSERT INTO books (title, author_name) VALUES ('#{title}', '#{author_name}');"
+    DatabaseConnection.exec_params(sql, [])
+  end
+
+  def update(id, column, new_value)
+    sql = "UPDATE books SET #{column} = #{new_value}"
+    DatabaseConnection.exec_params(sql, [])
+  end
+
+  def delete(id)
+    sql = "DELETE FROM books WHERE id = #{id}"
+    DatabaseConnection.exec_params(sql, [])
   end
 
   private
