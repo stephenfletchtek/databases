@@ -126,24 +126,25 @@ repo = UserAccountRepository.new
 
 user_account = repo.find(1)[0]
 
-user_account.id # =>  1
+user_account.id # => '1'
 user_account.email_address # =>  'homer@simpsons.com'
 user_account.cohort_username # =>  'Homer Simpson'
 
 # 3 
 # Create a user account
 lisa = UserAccount.new
-lisa.email_address = 'lisa@simsons.com'
+lisa.email_address = 'lisa@simpsons.com'
 lisa.username = 'Lisa Simpson'
 
 repo = UserAccountRepository.new
 repo.create(lisa)
 
+user_accounts = repo.all
 user_accounts.length # =>  3
 
-user_accounts[3].id # =>  1
-user_accounts[3].email_address # =>  'lisa@simpsons.com'
-user_accounts[3].username # =>  'Lisa Simpson'
+user_accounts[2].id # =>  3
+user_accounts[2].email_address # =>  'lisa@simpsons.com'
+user_accounts[2].username # =>  'Lisa Simpson'
 
 # 4
 # Update a user account
@@ -168,7 +169,7 @@ user_accounts[1].username # =>  'Bart Simpson'
 # Delete
 repo = UserAccountRepository.new
 repo.delete(1)
-user_accounts.length # =>  
+user_accounts.length # => 1
 
 user_accounts[0].id # =>  1
 user_accounts[0].email_address # =>  'bart@simpsons.com'

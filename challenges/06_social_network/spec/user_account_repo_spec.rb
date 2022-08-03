@@ -26,4 +26,30 @@ describe UserAccountRepository do
     expect(user_accounts[1].email_address).to eq 'bart@simpsons.com'
     expect(user_accounts[1].username).to eq 'Bart Simpson'
   end
+
+  it "gets a single user_account" do
+    repo = UserAccountRepository.new
+
+    user_account = repo.find(1)[0]
+    expect(user_account.id).to eq '1'
+    expect(user_account.email_address).to eq 'homer@simpsons.com'
+    expect(user_account.username).to eq 'Homer Simpson' 
+  end
+
+  it "creates a user account" do
+    lisa = UserAccount.new
+    lisa.email_address = 'lisa@simpsons.com'
+    lisa.username = 'Lisa Simpson'
+    
+    repo = UserAccountRepository.new
+    repo.create(lisa)
+    
+    user_accounts = repo.all
+    expect(user_accounts.length).to eq 3
+    
+    expect(user_accounts[2].id).to eq '3'
+    expect(user_accounts[2].email_address).to eq 'lisa@simpsons.com'
+    expect(user_accounts[2].username).to eq 'Lisa Simpson'  
+  end
+
 end
