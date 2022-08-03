@@ -52,4 +52,33 @@ describe UserAccountRepository do
     expect(user_accounts[2].username).to eq 'Lisa Simpson'  
   end
 
+  it "updates a user account" do
+    maggie = UserAccount.new
+    maggie.email_address = 'maggie@simpsons.com'
+    maggie.username = 'Maggie Simpson'
+    
+    repo = UserAccountRepository.new
+    repo.update(1, maggie)
+    
+    expect(repo.all.length).to eq 2
+    
+    expect(repo.find(1)[0].id).to eq '1'
+    expect(repo.find(1)[0].email_address).to eq 'maggie@simpsons.com'
+    expect(repo.find(1)[0].username).to eq 'Maggie Simpson'
+    
+    expect(repo.find(2)[0].id).to eq '2'
+    expect(repo.find(2)[0].email_address).to eq 'bart@simpsons.com'
+    expect(repo.find(2)[0].username).to eq 'Bart Simpson'  
+  end
+
+  it "deletes a user account" do
+    repo = UserAccountRepository.new
+    repo.delete(1)
+    user_accounts = repo.all
+    expect(user_accounts.length).to eq 1
+    
+    expect(user_accounts[0].id).to eq '2'
+    expect(user_accounts[0].email_address).to eq  'bart@simpsons.com'
+    expect(user_accounts[0].username).to eq  'Bart Simpson'
+  end
 end

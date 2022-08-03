@@ -149,29 +149,30 @@ user_accounts[2].username # =>  'Lisa Simpson'
 # 4
 # Update a user account
 maggie = UserAccount.new
-maggie.email_address = 'maggie@simsons.com'
+maggie.email_address = 'maggie@simpsons.com'
 maggie.username = 'Maggie Simpson'
 
 repo = UserAccountRepository.new
 repo.update(1, maggie)
 
-user_accounts.length # =>  2
+repo.all.length # =>  2
 
-user_accounts[0].id # =>  1
-user_accounts[0].email_address # =>  'maggie@simpsons.com'
-user_accounts[0].username # =>  'Maggie Simpson'
+repo.find(1)[0].id # =>  1
+repo.find(1)[0].email_address # =>  'maggie@simpsons.com'
+repo.find(1)[0].username # =>  'Maggie Simpson'
 
-user_accounts[1].id # =>  2
-user_accounts[1].email_address # =>  'bart@simpsons.com'
-user_accounts[1].username # =>  'Bart Simpson'
+repo.find(2)[0].id # =>  2
+repo.find(2)[0].email_address # =>  'bart@simpsons.com'
+repo.find(2)[0].username # =>  'Bart Simpson'
 
 # 5
 # Delete
 repo = UserAccountRepository.new
 repo.delete(1)
+user_accounts = repo.all
 user_accounts.length # => 1
 
-user_accounts[0].id # =>  1
+user_accounts[0].id # => 2
 user_accounts[0].email_address # =>  'bart@simpsons.com'
 user_accounts[0].username # =>  'Bart Simpson'
 ```
