@@ -127,6 +127,10 @@ class AlbumRepository
 
     # Returns an album object of Album objects.
   end
+
+  def create(album)
+    # INSERT INTO albums (album) VALUES ($1)
+  end
 end
 ```
 
@@ -169,6 +173,25 @@ album.id # =>  '1'
 album.title # =>  'Motomami'
 album.release_year # =>  '2022'
 album.artist_id # =>  '1'
+
+#3
+# Create a new album and add to repository
+repo = AlbumRepository.new
+album = Album.new
+album.title = 'Trompe le Monde'
+album.release_year = 1991
+album.artist_id = 1
+
+repo.create(album)
+
+albums = repo.all
+
+albums.length # =>  3
+
+albums[-1].id # =>  '3'
+albums[-1].title # =>  'Trompe le Monde'
+albums[-1].release_year # =>  '1991'
+albums[-1].artist_id # =>  '1'
 
 ```
 
