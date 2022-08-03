@@ -5,48 +5,51 @@ _Copy this recipe template to design and create two related database tables from
 ## 1. Extract nouns from the user stories or specification
 
 ```
-# EXAMPLE USER STORY:
-# (analyse only the relevant part - here the final line).
+As a social network user,
+So I can have my information registered,
+I'd like to have a user account with my email address.
 
-As a music lover,
-So I can organise my records,
-I want to keep a list of albums' titles.
+As a social network user,
+So I can have my information registered,
+I'd like to have a user account with my username.
 
-As a music lover,
-So I can organise my records,
-I want to keep a list of albums' release years.
+As a social network user,
+So I can write on my timeline,
+I'd like to create posts associated with my user account.
 
-As a music lover,
-So I can organise my records,
-I want to keep a list of artists' names.
+As a social network user,
+So I can write on my timeline,
+I'd like each of my posts to have a title and a content.
 
-As a music lover,
-So I can organise my records,
-I want to know each album's artist.
+As a social network user,
+So I can know who reads my posts,
+I'd like each of my posts to have a number of views.
 ```
 
 ```
 Nouns:
 
-album, title, release year, artist, name
+user_account, email_address, username
+post, user_account, title, content, num_views
+
 ```
 
 ## 2. Infer the Table Name and Columns
 
 Put the different nouns in this table. Replace the example with your own nouns.
 
-| Record                | Properties          |
-| --------------------- | ------------------  |
-| album                 | title, release year
-| artist                | name
+| Record                | Properties                              |
+| --------------------- | --------------------------------------- |
+| user_account          | email_address, username                 |
+| post                  | user_account, title, content, num_views |
 
-1. Name of the first table (always plural): `albums` 
+1. Name of the first table (always plural): `user_accounts` 
 
-    Column names: `title`, `release_year`
+    Column names: `email_address`, `username`
 
-2. Name of the second table (always plural): `artists` 
+2. Name of the second table (always plural): `posts` 
 
-    Column names: `name`
+    Column names: `user_account`, `title`, `content`, `num_views`
 
 ## 3. Decide the column types.
 
@@ -59,14 +62,17 @@ Remember to **always** have the primary key `id` as a first column. Its type wil
 ```
 # EXAMPLE:
 
-Table: albums
+Table: user_accounts
 id: SERIAL
-title: text
-release_year: int
+email_address: text
+username: text
 
-Table: artists
+Table: posts
 id: SERIAL
-name: text
+user_account: int
+title: text
+content: text
+num_views: int
 ```
 
 ## 4. Decide on The Tables Relationship
@@ -89,14 +95,14 @@ Replace the relevant bits in this example with your own:
 ```
 # EXAMPLE
 
-1. Can one artist have many albums? YES
-2. Can one album have many artists? NO
+1. Can one user_account have many posts? YES
+2. Can one post have many user_accounts? NO
 
 -> Therefore,
--> An artist HAS MANY albums
--> An album BELONGS TO an artist
+-> A user_acount HAS MANY posts
+-> A post BELONGS TO a user_account
 
--> Therefore, the foreign key is on the albums table.
+-> Therefore, the foreign key is on the posts table.
 ```
 
 *If you can answer YES to the two questions, you'll probably have to implement a Many-to-Many relationship, which is more complex and needs a third table (called a join table).*
@@ -105,32 +111,33 @@ Replace the relevant bits in this example with your own:
 
 ```sql
 -- EXAMPLE
--- file: albums_table.sql
+-- file: social_tables.sql
 
 -- Replace the table name, columm names and types.
 
 -- Create the table without the foreign key first.
-CREATE TABLE artists (
+CREATE TABLE user_accounts (
   id SERIAL PRIMARY KEY,
-  name text,
+  email_address text,
+  username text
 );
 
 -- Then the table with the foreign key first.
-CREATE TABLE albums (
+CREATE TABLE posts (
   id SERIAL PRIMARY KEY,
   title text,
-  release_year int,
+  content text,
+  num_views int,
 -- The foreign key name is always {other_table_singular}_id
-  artist_id int,
-  constraint fk_artist foreign key(artist_id)
-    references artists(id)
+  user_account_id int,
+  constraint fk_user_accounts foreign key(user_account_id)
+    references user_accounts(id)
     on delete cascade
 );
-
 ```
 
 ## 5. Create the tables.
 
 ```bash
-psql -h 127.0.0.1 database_name < albums_table.sql
+psql -h 127.0.0.1 social_network < social_tables.sql
 ```
