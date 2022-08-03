@@ -20,6 +20,13 @@ class AlbumRepository
     return make_album(result)
   end
 
+  def create(album)
+    sql = 'INSERT INTO albums (title, release_year, artist_id) VALUES ($1, $2, $3)'
+    params = [album.title, album.release_year, album.artist_id]
+    DatabaseConnection.exec_params(sql, params)
+    return    
+  end
+  
   private
 
   def make_album(result)
