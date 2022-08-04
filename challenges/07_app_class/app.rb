@@ -11,14 +11,19 @@ class Application
   end
 
   def run
-    p "Hello!"
-    # "Runs" the terminal application
-    # so it can ask the user to enter some input
-    # and then decide to run the appropriate action
-    # or behaviour.
-
-    # Use `@io.puts` or `@io.gets` to
-    # write output and ask for user input.
+    @io.puts "Enter your choice:"
+    user = @io.gets.chomp
+    if user == "1"
+      @io.puts "Here is the list of albums:"
+      sorted = @album_repository.all.sort_by { |album| album.id.to_i }
+      sorted.each { |album| @io.puts "* #{album.id} - #{album.title}" }
+    elsif user == "2"
+      @io.puts "Here is the list of artists:"
+      sorted = @artist_repository.all.sort_by { |artist| artist.id.to_i }
+      sorted.each { |artist| @io.puts "* #{artist.id} - #{artist.name}" }
+    else
+      @io.puts "Choice not recognised"
+    end
   end
 end
 
