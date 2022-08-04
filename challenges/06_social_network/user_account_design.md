@@ -12,7 +12,7 @@ If seed data is provided (or you already created it), you can skip this step.
 
 ```sql
 -- (file: spec/seeds_user_accounts.sql)
-TRUNCATE TABLE user_accounts RESTART IDENTITY; -- replace with your own table name.
+TRUNCATE TABLE posts, user_accounts RESTART IDENTITY; -- replace with your own table name.
 INSERT INTO user_accounts (email_address, username) VALUES ('homer@simpsons.com', 'Homer Simpson');
 INSERT INTO user_accounts (email_address, username) VALUES ('bart@simpsons.com', 'Bart Simpson');
 ```
@@ -20,7 +20,7 @@ INSERT INTO user_accounts (email_address, username) VALUES ('bart@simpsons.com',
 Run this SQL file on the database to truncate (empty) the table, and insert the seed data. Be mindful of the fact any existing records in the table will be deleted.
 
 ```bash
-psql -h 127.0.0.1 social_network < seeds_user_accounts.sql
+psql -h 127.0.0.1 social_network < seeds.sql
 ```
 
 ## 3. Define the class names
@@ -66,7 +66,7 @@ Using comments, define the method signatures (arguments and return value) and wh
 # Table name: user_accounts
 
 # Repository class
-# (in lib/user_account_repository.rb)
+# (in lib/user_account_repo.rb)
 
 class UserAccountRepository
   # Selecting all records
@@ -191,8 +191,8 @@ This is so you get a fresh table contents every time you run the test suite.
 # file: spec/user_account_repository_spec.rb
 
 def reset_user_accounts_table
-  seed_sql = File.read('spec/seeds_user_accounts.sql')
-  connection = PG.connect({ host: '127.0.0.1', dbname: 'user_accounts' })
+  seed_sql = File.read('spec/seeds.sql')
+  connection = PG.connect({ host: '127.0.0.1', dbname: 'social_network' })
   connection.exec(seed_sql)
 end
 

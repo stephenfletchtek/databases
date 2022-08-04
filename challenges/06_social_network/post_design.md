@@ -1,53 +1,25 @@
-# {{TABLE NAME}} Model and Repository Classes Design Recipe
+# {{posts}} Model and Repository Classes Design Recipe
 
-_Copy this recipe template to design and implement Model and Repository classes for a database table._
 
 ## 1. Design and create the Table
 
-If the table is already created in the database, you can skip this step.
-
-Otherwise, [follow this recipe to design and create the SQL schema for your table](./single_table_design_recipe_template.md).
-
-*In this template, we'll use an example table `students`*
-
-```
-# EXAMPLE
-
-Table: students
-
-Columns:
-id | name | cohort_name
-```
+Already created
 
 ## 2. Create Test SQL seeds
 
-Your tests will depend on data stored in PostgreSQL to run.
-
-If seed data is provided (or you already created it), you can skip this step.
-
 ```sql
--- EXAMPLE
 -- (file: spec/seeds_{table_name}.sql)
-
--- Write your SQL seed here. 
-
--- First, you'd need to truncate the table - this is so our table is emptied between each test run,
--- so we can start with a fresh state.
--- (RESTART IDENTITY resets the primary key)
-
-TRUNCATE TABLE students RESTART IDENTITY; -- replace with your own table name.
-
--- Below this line there should only be `INSERT` statements.
--- Replace these statements with your own seed data.
-
-INSERT INTO students (name, cohort_name) VALUES ('David', 'April 2022');
-INSERT INTO students (name, cohort_name) VALUES ('Anna', 'May 2022');
+TRUNCATE TABLE posts, user_accounts RESTART IDENTITY;
+INSERT INTO posts (title, content, num_views, user_account)
+VALUES ('Plutonium in Springfield', 'Today, I will explain howe to mine plutonium from underneath Springfield lake!', '5', '1');
+INSERT INTO posts (title, content, num_views, user_account)
+VALUES ('Prank my sister', 'I have thought of the best way to prank my baby sister.', '10', '2');
 ```
 
 Run this SQL file on the database to truncate (empty) the table, and insert the seed data. Be mindful of the fact any existing records in the table will be deleted.
 
 ```bash
-psql -h 127.0.0.1 your_database_name < seeds_{table_name}.sql
+psql -h 127.0.0.1 social_network < seeds.sql
 ```
 
 ## 3. Define the class names
@@ -55,17 +27,16 @@ psql -h 127.0.0.1 your_database_name < seeds_{table_name}.sql
 Usually, the Model class name will be the capitalised table name (single instead of plural). The same name is then suffixed by `Repository` for the Repository class name.
 
 ```ruby
-# EXAMPLE
-# Table name: students
+# Table name: posts
 
 # Model class
-# (in lib/student.rb)
-class Student
+# (in lib/post.rb)
+class Post
 end
 
 # Repository class
-# (in lib/student_repository.rb)
-class StudentRepository
+# (in lib/post_repository.rb)
+class PostRepository
 end
 ```
 
@@ -74,25 +45,14 @@ end
 Define the attributes of your Model class. You can usually map the table columns to the attributes of the class, including primary and foreign keys.
 
 ```ruby
-# EXAMPLE
-# Table name: students
+# Table name: posts
 
 # Model class
-# (in lib/student.rb)
+# (in lib/post.rb)
 
-class Student
-
-  # Replace the attributes by your own columns.
-  attr_accessor :id, :name, :cohort_name
+class Post
+  attr_accessor :id, :title, :content, :user_account_id
 end
-
-# The keyword attr_accessor is a special Ruby feature
-# which allows us to set and get attributes on an object,
-# here's an example:
-#
-# student = Student.new
-# student.name = 'Jo'
-# student.name
 ```
 
 *You may choose to test-drive this class, but unless it contains any more logic than the example above, it is probably not needed.*
@@ -101,45 +61,41 @@ end
 
 Your Repository class will need to implement methods for each "read" or "write" operation you'd like to run against the database.
 
-Using comments, define the method signatures (arguments and return value) and what they do - write up the SQL queries that will be used by each method.
-
 ```ruby
-# EXAMPLE
-# Table name: students
+# Table name: posts
 
 # Repository class
-# (in lib/student_repository.rb)
+# (in lib/post_repo.rb)
 
-class StudentRepository
-
+class PostRepository
   # Selecting all records
-  # No arguments
   def all
     # Executes the SQL query:
-    # SELECT id, name, cohort_name FROM students;
-
-    # Returns an array of Student objects.
+    # SELECT * FROM posts;
+    # Returns an array of Post objects.
   end
 
   # Gets a single record by its ID
   # One argument: the id (number)
   def find(id)
     # Executes the SQL query:
-    # SELECT id, name, cohort_name FROM students WHERE id = $1;
-
-    # Returns a single Student object.
+    # SELECT * FROM posts WHERE id = $1;
+    # Returns a single Post object.
   end
 
-  # Add more methods below for each operation you'd like to implement.
+  def create(post)
+    # INSERT INTO posts (title, content, num_views, user_account_id) VALUES ($1, $2, $3, $4)
+    # returns nothing
+  end
 
-  # def create(student)
-  # end
+  def update(id, post)
+    # UPDATE posts SET (title, content, num_views, user_account_id) = ($1, $2, $3, $4) WHERE id = $5
+    # returns nothing
+  end
 
-  # def update(student)
-  # end
-
-  # def delete(student)
-  # end
+  def delete(post)
+    # DELETE FROM posts WHERE id = $1
+  end
 end
 ```
 
@@ -150,37 +106,97 @@ Write Ruby code that defines the expected behaviour of the Repository class, fol
 These examples will later be encoded as RSpec tests.
 
 ```ruby
-# EXAMPLES
-
 # 1
-# Get all students
+# Get all posts
 
-repo = StudentRepository.new
+repo = PostRepository.new
+posts = repo.all
 
-students = repo.all
+posts.length # =>  2
 
-students.length # =>  2
+posts[0].id # =>  1
+posts[0].title # => 'Plutonium in Springfield'
+posts[0].content # => 
+# 'Today, I will explain howe to mine plutonium from underneath Springfield lake!'
+posts[0].num_views # => '5'
+posts[0].user_account_id # => '1'
 
-students[0].id # =>  1
-students[0].name # =>  'David'
-students[0].cohort_name # =>  'April 2022'
-
-students[1].id # =>  2
-students[1].name # =>  'Anna'
-students[1].cohort_name # =>  'May 2022'
+posts[1].id # =>  2
+posts[1].title # => 'Prank my sister'	
+posts[1].content # =>
+# 'I have thought of the best way to prank my baby sister.'
+posts[1].num_views # => '10'
+posts[1].user_account_id # => '2'
 
 # 2
-# Get a single student
+# Get a single post
 
-repo = StudentRepository.new
+repo = PostRepository.new
+post = repo.find(1)
 
-student = repo.find(1)
+post.id # =>  1
+post.title # => 'Plutonium in Springfield'
+post.content # =>  
+# 'Today, I will explain howe to mine plutonium from underneath Springfield lake!'
+post.num_views # => '5'
+post.user_account_id # => '1'
 
-student.id # =>  1
-student.name # =>  'David'
-student.cohort_name # =>  'April 2022'
+# 3
+# Create a post
+pollute = Post.new
+pollute.title # => 'Pig poo disposal'
+pollute.content # => 
+# 'Simply dump the silos in Springfield lake, no one will ever find out!'
+pollute.num_views # => '20'
+pollute.user_account_id # => '1'
 
-# Add more examples for each method
+repo = PostRepository.new
+repo.create(pollute)
+
+posts = repo.all
+posts.length # => 3
+
+posts[2].id # => '3'
+posts[2].title # => pollute.title
+posts[2].content # => pollute.content
+posts[2].num_views # => pollute.num_views
+posts[2].user_account_id # => pollute.user_account_id
+
+# 4
+# Update a post
+pollute = Post.new
+pollute.title # => 'Pig poo disposal'
+pollute.content # => 
+# 'Simply dump the silos in Springfield lake, no one will ever find out!'
+pollute.num_views # => '20'
+pollute.user_account_id # => '1'
+
+repo = PostRepository.new
+repo.update(1, pollute)
+
+posts = repo.all
+posts.length # => 2
+
+posts[1].id # => '1'
+posts[1].title # => pollute.title
+posts[1].content # => pollute.content
+posts[1].num_views # => pollute.num_views
+posts[1].user_account_id # => pollute.user_account_id
+
+# 5
+# Delete
+repo = PostRepository.new
+repo.delete(1)
+
+posts = repo.all
+posts.length # =>
+
+posts[0].id # =>  2
+posts[0].title # => 'Prank my sister'	
+posts[0].content # =>
+# 'I have thought of the best way to prank my baby sister.'
+posts[0].num_views # => '10'
+posts[0].user_account_id # => '2'
 ```
 
 Encode this example as a test.
@@ -192,19 +208,17 @@ Running the SQL code present in the seed file will empty the table and re-insert
 This is so you get a fresh table contents every time you run the test suite.
 
 ```ruby
-# EXAMPLE
+# file: spec/post_repository_spec.rb
 
-# file: spec/student_repository_spec.rb
-
-def reset_students_table
-  seed_sql = File.read('spec/seeds_students.sql')
-  connection = PG.connect({ host: '127.0.0.1', dbname: 'students' })
+def reset_posts_table
+  seed_sql = File.read('spec/seeds.sql')
+  connection = PG.connect({ host: '127.0.0.1', dbname: 'social_network' })
   connection.exec(seed_sql)
 end
 
-describe StudentRepository do
+describe PostRepository do
   before(:each) do 
-    reset_students_table
+    reset_posts_table
   end
 
   # (your tests will go here).
