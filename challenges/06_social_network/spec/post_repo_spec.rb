@@ -46,7 +46,7 @@ describe PostRepository do
 
   it "creates a post" do
     pollute = Post.new
-    pollute.title ='Pig poo disposal'
+    pollute.title = 'Pig poo disposal'
     str = 'Simply dump the silos in Springfield lake, no one will ever find out!'
     pollute.content = str 
     pollute.num_views = '20'

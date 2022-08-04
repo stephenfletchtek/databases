@@ -16,7 +16,7 @@ class PostRepository
   def create(post)
     sql = 'INSERT INTO posts
       (title, content, num_views, user_account_id) 
-      VALUES ($1, $2, $3, $4)'
+      VALUES ($1, $2, $3, $4);'
     params = [post.title, post.content, post.num_views, post.user_account_id]
     DatabaseConnection.exec_params(sql, params)
   end
@@ -24,13 +24,13 @@ class PostRepository
   def update(id, post)
     sql = 'UPDATE posts SET 
       (title, content, num_views, user_account_id) = ($1, $2, $3, $4) 
-      WHERE id = $5'
+      WHERE id = $5;'
     params = [post.title, post.content, post.num_views, post.user_account_id, id]
     DatabaseConnection.exec_params(sql, params)
   end
 
   def delete(id)
-    sql = 'DELETE FROM posts WHERE id = $1'
+    sql = 'DELETE FROM posts WHERE id = $1;'
     DatabaseConnection.exec_params(sql, [id])
   end
 
