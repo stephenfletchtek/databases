@@ -85,4 +85,19 @@ describe PostRepository do
     expect(posts[1].num_views).to eq (pollute.num_views)
     expect(posts[1].user_account_id).to eq (pollute.user_account_id)
   end
+
+  it "deletes a post" do
+    repo = PostRepository.new
+    repo.delete(1)
+    
+    posts = repo.all
+    expect(posts.length).to eq 1
+    
+    expect(posts[0].id).to eq '2'
+    expect(posts[0].title).to eq 'Prank my sister'	
+    str = 'I have thought of the best way to prank my baby sister.'
+    expect(posts[0].content).to eq (str) 
+    expect(posts[0].num_views).to eq '10'
+    expect(posts[0].user_account_id).to eq '2'
+  end
 end
