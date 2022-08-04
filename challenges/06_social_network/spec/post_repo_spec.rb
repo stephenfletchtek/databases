@@ -64,4 +64,25 @@ describe PostRepository do
     expect(posts[2].num_views).to eq (pollute.num_views)
     expect(posts[2].user_account_id).to eq (pollute.user_account_id)
   end
+
+  it "updates a post" do
+    pollute = Post.new
+    pollute.title = 'Pig poo disposal'
+    str = 'Simply dump the silos in Springfield lake, no one will ever find out!'
+    pollute.content = str
+    pollute.num_views = '20'
+    pollute.user_account_id = '1'
+    
+    repo = PostRepository.new
+    repo.update(1, pollute)
+    
+    posts = repo.all
+    expect(posts.length).to eq 2
+    
+    expect(posts[1].id).to eq '1'
+    expect(posts[1].title).to eq (pollute.title)
+    expect(posts[1].content).to eq (pollute.content)
+    expect(posts[1].num_views).to eq (pollute.num_views)
+    expect(posts[1].user_account_id).to eq (pollute.user_account_id)
+  end
 end

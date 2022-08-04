@@ -21,6 +21,14 @@ class PostRepository
     DatabaseConnection.exec_params(sql, params)
   end
 
+  def update(id, post)
+    sql = 'UPDATE posts SET 
+      (title, content, num_views, user_account_id) = ($1, $2, $3, $4) 
+      WHERE id = $5'
+    params = [post.title, post.content, post.num_views, post.user_account_id, id]
+    DatabaseConnection.exec_params(sql, params)
+  end
+
   private
 
   def make_post(record)
