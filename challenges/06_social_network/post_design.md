@@ -144,11 +144,11 @@ post.user_account_id # => '1'
 # 3
 # Create a post
 pollute = Post.new
-pollute.title # => 'Pig poo disposal'
-pollute.content # => 
-# 'Simply dump the silos in Springfield lake, no one will ever find out!'
-pollute.num_views # => '20'
-pollute.user_account_id # => '1'
+pollute.title = 'Pig poo disposal'
+str = 'Simply dump the silos in Springfield lake, no one will ever find out!'
+pollute.content = str
+pollute.num_views = '20'
+pollute.user_account_id = '1'
 
 repo = PostRepository.new
 repo.create(pollute)

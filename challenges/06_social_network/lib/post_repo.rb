@@ -13,6 +13,14 @@ class PostRepository
     result.map { |record| make_post(record) }
   end
 
+  def create(post)
+    sql = 'INSERT INTO posts
+      (title, content, num_views, user_account_id) 
+      VALUES ($1, $2, $3, $4)'
+    params = [post.title, post.content, post.num_views, post.user_account_id]
+    DatabaseConnection.exec_params(sql, params)
+  end
+
   private
 
   def make_post(record)
