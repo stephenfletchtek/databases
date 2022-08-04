@@ -4,20 +4,13 @@ class AlbumRepository
   def all
     sql = 'SELECT * FROM albums;'
     result = DatabaseConnection.exec_params(sql, [])
-
-    albums = []
-    result.each do |record|
-      albums << make_album(record)
-    end
-    
-    return albums
+    result.map { |record| make_album(record) }
   end
 
   def find(id)
     sql = 'SELECT * FROM albums WHERE id = $1;'
-    params = [id]
-    result = DatabaseConnection.exec_params(sql, params)[0]
-    return make_album(result)
+    result = DatabaseConnection.exec_params(sql, [id])
+    result.map { |record| make_album(record) }[0]
   end
 
   private

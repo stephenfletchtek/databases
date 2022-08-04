@@ -1,3 +1,3 @@
-class artist_id
+class Artist
   attr_accessor :id, :name, :genre
 end

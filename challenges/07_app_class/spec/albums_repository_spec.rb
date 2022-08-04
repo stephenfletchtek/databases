@@ -1,4 +1,4 @@
-require 'album_repository'
+require 'album_repo'
 
 RSpec.describe AlbumRepository do
 

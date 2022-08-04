@@ -1,14 +1,33 @@
+require_relative './lib/album_repo'
+require_relative './lib/artist_repo'
 require_relative 'lib/database_connection'
-require_relative 'lib/album_repository'
 
-# We need to give the database name to the method `connect`.
-DatabaseConnection.connect('music_library')
+class Application
+  def initialize(database_name, io, album_repository, artist_repository)
+    DatabaseConnection.connect(database_name)
+    @io = io
+    @album_repository = album_repository
+    @artist_repository = artist_repository
+  end
 
-# Print out each record from the result set .
-album_repository = AlbumRepository.new
+  def run
+    p "Hello!"
+    # "Runs" the terminal application
+    # so it can ask the user to enter some input
+    # and then decide to run the appropriate action
+    # or behaviour.
 
-# album_repository.all.each do |album|
-#   p album
-# end
+    # Use `@io.puts` or `@io.gets` to
+    # write output and ask for user input.
+  end
+end
 
-p album_repository.find('3')
+if __FILE__ == $0
+  app = Application.new(
+    'music_library',
+    Kernel,
+    AlbumRepository.new,
+    ArtistRepository.new
+  )
+  app.run
+end
