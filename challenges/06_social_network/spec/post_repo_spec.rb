@@ -31,4 +31,16 @@ describe PostRepository do
     expect(posts[1].num_views).to eq '10'
     expect(posts[1].user_account_id).to eq '2'
   end
+
+  it "gets a single post" do
+    repo = PostRepository.new
+    post = repo.find(1)[0]
+    
+    expect(post.id).to eq '1'
+    expect(post.title).to eq 'Plutonium in Springfield'
+    str = 'Today, I will explain howe to mine plutonium from underneath Springfield lake!'
+    expect(post.content).to eq (str) 
+    expect(post.num_views).to eq '5'
+    expect(post.user_account_id).to eq '1'  
+  end
 end

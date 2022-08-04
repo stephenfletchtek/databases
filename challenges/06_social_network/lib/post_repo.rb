@@ -2,8 +2,14 @@ require 'post'
 
 class PostRepository
   def all
-    sql = 'SELECT * FROM posts'
+    sql = 'SELECT * FROM posts;'
     result = DatabaseConnection.exec_params(sql, [])
+    result.map { |record| make_post(record) }
+  end
+
+  def find(id)
+    sql = 'SELECT * FROM posts WHERE id = $1;'
+    result = DatabaseConnection.exec_params(sql, [id])
     result.map { |record| make_post(record) }
   end
 

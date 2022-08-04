@@ -132,7 +132,7 @@ posts[1].user_account_id # => '2'
 # Get a single post
 
 repo = PostRepository.new
-post = repo.find(1)
+post = repo.find(1)[0]
 
 post.id # =>  1
 post.title # => 'Plutonium in Springfield'
