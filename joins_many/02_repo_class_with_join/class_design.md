@@ -55,101 +55,54 @@ end
 
 ## 5. Define the Repository Class interface
 
-Your Repository class will need to implement methods for each "read" or "write" operation you'd like to run against the database.
-
-Using comments, define the method signatures (arguments and return value) and what they do - write up the SQL queries that will be used by each method.
-
 ```ruby
-# EXAMPLE
-# Table name: albums
-
+# Table name: cohorts
 # Repository class
-# (in lib/album_repository.rb)
+# (in lib/cohort_repo.rb)
+class CohortRepository
 
-class AlbumRepository
+  # find_with_students
+  def find_with_students(id)
+    # SQL 'SELECT cohorts.id,
+    #             cohorts.name, 
+    #             cohorts.starting_date,
+    #             students.id AS student_id,
+    #             students.name
+    #     FROM cohorts JOIN students
+    #     ON students.cohort_id = cohorts.id
+    #     WHERE cohorts.id = $1;'
 
-  # Selecting all records
-  # No arguments
-  def all
-    # Executes the SQL query:
-    # SELECT * FROM albums;
-
-    # Returns an array of Album objects.
+    # returns a cohort object containing related students
   end
 
-  def find(id)
-    # Executes the SQL query:
-    # SELECT * FROM albums WHERE id = $1;
-
-    # Returns an album object of Album objects.
-  end
 end
 ```
 
 ## 6. Write Test Examples
 
-Write Ruby code that defines the expected behaviour of the Repository class, following your design from the table written in step 5.
-
-These examples will later be encoded as RSpec tests.
-
 ```ruby
-# EXAMPLES
-
-# 1
-# Get all albums
-
-repo = AlbumRepository.new
-
-albums = repo.all
-
-albums.length # =>  2
-
-albums.first.id # =>  '1'
-albums.first.title # =>  'Motomami'
-albums.first.release_year # =>  '2022'
-albums.first.artist_id # =>  '1'
-
-albums.second.id # =>  '2'
-albums.second.title # =>  'In Colour'
-albums.second.release_year # =>  '2022'
-albums.second.artist_id # =>  '2'
-
-# 2
-# Get a album based on an id
-
-repo = AlbumRepository.new
-
-album = repo.find(1)
-
-album.id # =>  '1'
-album.title # =>  'Motomami'
-album.release_year # =>  '2022'
-album.artist_id # =>  '1'
-
+# 1 Get cohort with students
+repo = CohortRepository.new
+cohort = repo.find_with_students(3)
+cohort.name # => 'august22'
+cohort.students.length # => 3
+cohort.students[0].name # =>'Goldilocks' 
 ```
-
-Encode this example as a test.
 
 ## 7. Reload the SQL seeds before each test run
 
-Running the SQL code present in the seed file will empty the table and re-insert the seed data.
-
-This is so you get a fresh table contents every time you run the test suite.
-
 ```ruby
-# EXAMPLE
+# file: spec/cohort_repository_spec.rb
 
-# file: spec/albums_repository_spec.rb
-
-def reset_albums_table
-  seed_sql = File.read('spec/seeds_albums.sql')
-  connection = PG.connect({ host: '127.0.0.1', dbname: 'music_library_test' })
+def reset_cohorts_table
+  seed_sql = File.read('spec/seeds.sql')
+  connection = PG.connect({ host: '127.0.0.1', dbname: 'student_directory_2' })
   connection.exec(seed_sql)
 end
 
-describe AlbumRepository do
+describe CohortRepository do
   before(:each) do
-    reset_albums_table
+    reset_cohorts_table
   end
 
   # (your tests will go here).
