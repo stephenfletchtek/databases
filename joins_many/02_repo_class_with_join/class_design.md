@@ -1,4 +1,4 @@
-# {cohort} Model and Repository Classes Design Recipe
+# Cohort Model and Repository Classes Design Recipe
 
 ## 1. Design and create the Table
 
@@ -20,7 +20,7 @@ INSERT INTO students (name, cohort_id) VALUES ('Red Riding Hood', 3);
 ```
 
 ```bash
-psql -h 127.0.0.1 student_directory_2< seeds.sql
+psql -h 127.0.0.1 student_directory_2 < seeds.sql
 ```
 
 ## 3. Define the class names
@@ -42,9 +42,7 @@ end
 ## 4. Implement the Model class
 
 ```ruby
-# EXAMPLE
 # Table name: cohorts
-
 # Model class
 # (in lib/cohort.rb)
 
@@ -59,9 +57,9 @@ end
 # Table name: cohorts
 # Repository class
 # (in lib/cohort_repo.rb)
-class CohortRepository
 
-  # find_with_students
+class CohortRepository
+  # find_with_students method
   def find_with_students(id)
     # SQL 'SELECT cohorts.id,
     #             cohorts.name, 
@@ -74,7 +72,6 @@ class CohortRepository
 
     # returns a cohort object containing related students
   end
-
 end
 ```
 
@@ -82,11 +79,12 @@ end
 
 ```ruby
 # 1 Get cohort with students
+
 repo = CohortRepository.new
 cohort = repo.find_with_students(3)
 cohort.name # => 'august22'
 cohort.students.length # => 3
-cohort.students[0].name # =>'Goldilocks' 
+cohort.students[0].name # =>'Goldilocks'
 ```
 
 ## 7. Reload the SQL seeds before each test run
@@ -111,4 +109,4 @@ end
 
 ## 8. Test-drive and implement the Repository class behaviour
 
-_After each test you write, follow the test-driving process of red, green, refactor to implement the behaviour._
+_Used the test-driving process of red, green, refactor to implement the behaviour._
