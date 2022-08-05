@@ -1,0 +1,10 @@
+TRUNCATE TABLE students, cohorts RESTART IDENTITY;
+INSERT INTO cohorts (name, starting_date) VALUES ('june22', '15/06/22');
+INSERT INTO cohorts (name, starting_date) VALUES ('july22', '18/07/22');
+INSERT INTO cohorts (name, starting_date) VALUES ('august22', '04/08/22');
+INSERT INTO students (name, cohort_id) VALUES ('Bart Simpson', 1);
+INSERT INTO students (name, cohort_id) VALUES ('Homer Simpson', 2);
+INSERT INTO students (name, cohort_id) VALUES ('Daffy Duck', 2);
+INSERT INTO students (name, cohort_id) VALUES ('Goldilocks', 3);
+INSERT INTO students (name, cohort_id) VALUES ('Big Bad Wolf', 3);
+INSERT INTO students (name, cohort_id) VALUES ('Red Riding Hood', 3);
