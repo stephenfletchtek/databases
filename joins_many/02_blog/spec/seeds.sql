@@ -1,0 +1,10 @@
+TRUNCATE TABLE posts, comments RESTART IDENTITY;
+INSERT INTO posts (title, content) VALUES ('Monday', 'I learned some databases');
+INSERT INTO posts (title, content) VALUES ('Tuesday', 'I fed an axylotl');
+INSERT INTO posts (title, content) VALUES ('Wednesday', 'It poured with rain');
+INSERT INTO comments (content, author, post_id) VALUES ('Boring!', 'Bart Simpson', 1);
+INSERT INTO comments (content, author, post_id) VALUES ('Whats an axylotl?', 'Homer Simpson', 2);
+INSERT INTO comments (content, author, post_id) VALUES ('Thatth Thweet', 'Daffy Duck', 2);
+INSERT INTO comments (content, author, post_id) VALUES ('I went for a swim', 'Goldilocks', 3);
+INSERT INTO comments (content, author, post_id) VALUES ('Snap!', 'Big Bad Wolf', 1);
+INSERT INTO comments (content, author, post_id) VALUES ('What is a database?', 'Red Riding Hood', 1);

@@ -20,7 +20,7 @@ INSERT INTO comments (content, author, post_id) VALUES ('What is a database?', '
 ```
 
 ```bash
-psql -h 127.0.0.1 student_directory_2 < seeds.sql
+psql -h 127.0.0.1 blog < spec/seeds.sql
 ```
 
 ## 3. Define the class names
