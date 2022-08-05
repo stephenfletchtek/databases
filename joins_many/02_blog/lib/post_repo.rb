@@ -1,5 +1,5 @@
-require 'post'
-require 'comment'
+require_relative 'post'
+require_relative 'comment'
 
 class PostRepository
   # find_with_comments method

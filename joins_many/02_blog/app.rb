@@ -1,12 +1,13 @@
+require_relative 'lib/post_repo'
 require_relative 'lib/database_connection'
 
 DatabaseConnection.connect('blog')
 
-# Perform a SQL query on the database and get the result set.                             
-sql = ''           
-result = DatabaseConnection.exec_params(sql, [])
+repo = PostRepository.new
+post = repo.find_with_comments(1)
 
-# Print out each record from the result set .
-result.each do |record|
-  p record
+puts "#{post.id}. #{post.title} - #{post.content}"
+
+post.comments.each do |comment|
+  puts "   #{comment.id} - #{comment.content} - #{comment.author}"
 end
