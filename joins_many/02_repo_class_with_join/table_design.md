@@ -1,10 +1,10 @@
 # Two Tables Design Recipe Template
 
-_Copy this recipe template to design and create two related database tables from a specification._
-
 ## 1. Extract nouns from the user stories or specification
 
 ```
+User stories:
+
 As a coach
 So I can get to know all students
 I want to see a list of students' names.
@@ -74,7 +74,7 @@ name: text
 ## 4. Write the SQL.
 
 ```sql
--- file: albums_table.sql
+-- file: create_table.sql
 -- Replace the table name, columm names and types.
 -- Create the table without the foreign key first.
 
