@@ -11,5 +11,11 @@ describe CohortRepository do
     reset_cohorts_table
   end
 
-  # (your tests will go here).
+  it "gets a cohort with students" do
+    repo = CohortRepository.new
+    cohort = repo.find_with_students(3)
+    expect(cohort.name).to eq 'august22'
+    expect(cohort.students.length).to eq 3
+    expect(cohort.students[0].name).to eq 'Goldilocks'
+  end
 end

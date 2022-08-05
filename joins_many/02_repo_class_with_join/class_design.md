@@ -84,7 +84,7 @@ repo = CohortRepository.new
 cohort = repo.find_with_students(3)
 cohort.name # => 'august22'
 cohort.students.length # => 3
-cohort.students[0].name # =>'Goldilocks'
+cohort.students[0].name # => 'Goldilocks'
 ```
 
 ## 7. Reload the SQL seeds before each test run
