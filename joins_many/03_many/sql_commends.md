@@ -1,12 +1,12 @@
 # These commands given during exercise
 
-# 1. Setup
+## 1. Setup
 ```bash
 createdb blog_2
 psql -h 127.0.0.1 blog_2 < blog_posts_tags.sql
 ```
 
-# 2. Select example
+## 2. Select example
 ```sql
 SELECT tags.id, tags.name
   FROM tags
@@ -15,7 +15,7 @@ SELECT tags.id, tags.name
     WHERE posts.id = 2;
 ```
 
-# 3. Exercise One
+## 3. Exercise One
 ```sql
 SELECT posts.id, posts.title
   FROM posts
@@ -24,7 +24,7 @@ SELECT posts.id, posts.title
     WHERE tags.id = 2;
 ```
 
-# 4. Challenge
+#ß# 4. Challenge
 ```sql
 INSERT INTO tags (name) VALUES ('sql');
 INSERT INTO posts_tags (post_id, tag_id) VALUES (7, 5);
