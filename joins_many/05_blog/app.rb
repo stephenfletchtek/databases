@@ -1,11 +1,11 @@
+require_relative 'lib/post_repo'
 require_relative 'lib/database_connection'
-# We need to give the database name to the method .                                     
-DatabaseConnection.connect('social_network')
-# Perform a SQL query on the database and get the result set.                             
-sql = 'SELECT id, title FROM albums;'           
-result = DatabaseConnection.exec_params(sql, [])
 
-# Print out each record from the result set .
-result.each do |record|
-  p record
+DatabaseConnection.connect('blog_2')
+
+repo = PostRepository.new
+results = repo.find_by_tag(1)
+
+results.each do |post|
+  puts "#{post.id}. #{post.title}"
 end

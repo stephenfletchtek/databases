@@ -1,5 +1,5 @@
-require 'post'
-require 'tag'
+require_relative 'post'
+# require 'tag'
 
 class PostRepository
   def find_by_tag(id)
