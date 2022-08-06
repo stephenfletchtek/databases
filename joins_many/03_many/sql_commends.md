@@ -15,7 +15,7 @@ SELECT tags.id, tags.name
     WHERE posts.id = 2;
 ```
 
-# 4. Exercise One
+# 3. Exercise One
 ```sql
 SELECT posts.id, posts.title
   FROM posts
@@ -24,7 +24,7 @@ SELECT posts.id, posts.title
     WHERE tags.id = 2;
 ```
 
-# 5. Challenge
+# 4. Challenge
 ```sql
 INSERT INTO tags (name) VALUES ('sql');
 INSERT INTO posts_tags (post_id, tag_id) VALUES (7, 5);
